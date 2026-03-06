@@ -1,0 +1,28 @@
+{
+  "name": "ChemCalc Pro",
+  "short_name": "ChemCalc",
+  "description": "Calculadora de concentración de químicos. Calcula el % p/p a partir de conductividad medida.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0e1a",
+  "theme_color": "#3b82f6",
+  "lang": "es",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": []
+}

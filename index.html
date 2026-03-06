@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Calculadora de concentración de químicos. Calcula el % p/p a partir de la conductividad medida." />
+  <meta name="theme-color" content="#3b82f6" />
+
+  <!-- PWA / iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ChemCalc" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="./manifest.json" />
+
+  <title>ChemCalc Pro | Calculadora de Dosis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚗️</span>
+        <span class="logo-text">ChemCalc <span class="logo-tag">Pro</span></span>
+      </div>
+      <p class="header-subtitle">Calculadora de Concentración · % p/p</p>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+
+      <!-- INPUTS -->
+      <section class="card card-inputs" aria-label="Calculadora de dosis">
+        <h1 class="card-title">
+          <span class="card-title-icon">🧪</span>
+          Calculadora de Dosis
+        </h1>
+
+        <!-- Buscador de producto -->
+        <div class="form-group">
+          <label class="form-label" for="search-input">
+            Producto Químico
+            <span class="label-hint">Escribe para buscar entre 75 productos</span>
+          </label>
+          <div class="search-group">
+            <div class="input-wrap search-wrap">
+              <span class="input-icon">🔍</span>
+              <input type="text" id="search-input" class="form-input search-input" placeholder="Buscar producto..."
+                autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="chem-dropdown" />
+              <button id="search-clear" class="search-clear hidden" type="button"
+                aria-label="Limpiar búsqueda">✕</button>
+            </div>
+            <div id="chem-dropdown" class="chem-dropdown hidden" role="listbox" aria-label="Lista de productos"></div>
+          </div>
+
+          <!-- Producto seleccionado -->
+          <div id="selected-chem" class="selected-chem hidden">
+            <div class="selected-chem-header">
+              <span class="selected-chem-label">✅ Seleccionado:</span>
+              <button id="clear-selection" class="btn-clear-sel" type="button">✕ Cambiar</button>
+            </div>
+            <div class="selected-chem-name" id="selected-chem-name">—</div>
+            <div class="selected-chem-pills" id="selected-chem-data"></div>
+          </div>
+        </div>
+
+        <!-- Conductividad del agua -->
+        <div class="form-group">
+          <label class="form-label" for="water-cond">
+            Conductividad del Agua
+            <span class="label-hint">Lectura del agua sin producto (requerido)</span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="water-cond" class="form-input" placeholder="Ej: 1.76" min="0" step="0.001" />
+            <span class="input-unit">mS/cm</span>
+          </div>
+        </div>
+
+        <!-- Conductividad medida -->
+        <div class="form-group">
+          <label class="form-label" for="measured-cond">
+            Conductividad Medida
+            <span class="label-hint">Lectura del conductímetro con el producto</span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="measured-cond" class="form-input" placeholder="Ej: 4.0" min="0" step="0.001" />
+            <span class="input-unit">mS/cm</span>
+          </div>
+        </div>
+
+        <button id="calculate-btn" class="btn-calculate" type="button" disabled>
+          <span class="btn-icon">⚡</span>
+          Calcular % p/p
+        </button>
+
+        <div class="formula-hint">
+          <span class="fh-title">Fórmula:</span>
+          <span class="fh-formula">% p/p = (medida − Cond. agua − Col. C) ÷ Col. B</span>
+        </div>
+      </section>
+
+      <!-- RESULTADO -->
+      <section class="card card-result" id="result-section" aria-live="polite" aria-label="Resultado">
+        <div id="result-placeholder" class="result-placeholder">
+          <span class="placeholder-icon">📊</span>
+          <p>Selecciona un producto, introduce las conductividades y pulsa <strong>Calcular</strong></p>
+        </div>
+
+        <div id="result-content" class="result-content hidden">
+          <h2 class="card-title">
+            <span class="card-title-icon">📊</span>
+            Resultado
+          </h2>
+
+          <div class="result-product" id="res-chem-name">—</div>
+
+          <div class="result-big">
+            <span class="result-number" id="res-value">0.0000</span>
+            <span class="result-unit-big">% p/p</span>
+          </div>
+
+          <div class="formula-breakdown" id="res-formula"></div>
+          <div class="result-interp hidden" id="res-interp"></div>
+
+          <button id="reset-btn" class="btn-reset" type="button">↺ Nueva Consulta</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Estimaciones basadas en datos de calibración. Verificar con análisis de laboratorio.</p>
+    <p class="footer-copy">ChemCalc Pro &copy; 2026</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Registrar Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .catch(() => { }); // Silenciar errores en desarrollo local
+      });
+    }
+  </script>
+</body>
+
+</html>
